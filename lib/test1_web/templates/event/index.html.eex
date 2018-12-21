@@ -22,7 +22,7 @@
       <td><%= event.city %></td>
       <td><%= event.description %></td>
       <td><%= event.date %></td>
-      <td><%= event.cover %></td>
+      <td><img src="<%= Test1.ImageUploader.url({event.cover, event}) %>"></td>
       <td><%= event.address %></td>
       <td><%= event.link %></td>
       <td><%= link event.user.name, to: user_path(@conn, :show, event.user.id) %></td>

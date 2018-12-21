@@ -24,7 +24,7 @@
 
   <li>
     <strong>Cover:</strong>
-    <%= @event.cover %>
+    <img src="<%= Test1.ImageUploader.url({@event.cover, @event}) %>">
   </li>
 
   <li>

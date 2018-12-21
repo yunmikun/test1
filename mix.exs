@@ -20,7 +20,7 @@ defmodule Test1.Mixfile do
   def application do
     [
       mod: {Test1.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :arc_ecto]
     ]
   end
 
@@ -42,7 +42,9 @@ defmodule Test1.Mixfile do
       {:gettext, "~> 0.11"},
       {:plug_cowboy, "~> 2.0"},
       {:jason, "~> 1.0"},
-      {:cowboy, "~> 2.0"}
+      {:cowboy, "~> 2.0"},
+      {:arc, "~> 0.11.0"},
+      {:arc_ecto, "~> 0.11.1"}
     ]
   end
 
