@@ -16,7 +16,20 @@
       <header class="header">
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+            <%= if get_session(@conn, :user_id) != nil do %>
+              <%= form_for @conn, session_path(@conn, :delete), [method: :delete, as: :user], fn _ -> %>
+                <li>
+                  <%= submit "Sign out" %>
+                </li>
+              <% end %>
+	    <% else %>
+              <li>
+	        <%= link "Sign in", to: session_path(@conn, :new) %>
+              </li>
+	      <li>
+		<%= link "Sing up", to: user_path(@conn, :new) %>
+	      </li>
+	    <% end %>
           </ul>
         </nav>
         <span class="logo"></span>

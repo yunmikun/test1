@@ -2,6 +2,7 @@ defmodule Test1Web.PageController do
   use Test1Web, :controller
 
   def index(conn, _params) do
-    render conn, "index.html"
+    conn
+    |> redirect(to: event_path(conn, :index))
   end
 end

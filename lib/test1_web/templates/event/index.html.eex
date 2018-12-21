@@ -1,0 +1,40 @@
+<h1>Listing Events</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>City</th>
+      <th>Description</th>
+      <th>Date</th>
+      <th>Cover</th>
+      <th>Address</th>
+      <th>Link</th>
+      <th>Organizer</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for event <- @events do %>
+    <tr>
+      <td><%= event.title %></td>
+      <td><%= event.city %></td>
+      <td><%= event.description %></td>
+      <td><%= event.date %></td>
+      <td><%= event.cover %></td>
+      <td><%= event.address %></td>
+      <td><%= event.link %></td>
+      <td><%= link event.user.name, to: user_path(@conn, :show, event.user.id) %></td>
+
+      <td>
+        <%= link "Show", to: event_path(@conn, :show, event) %>
+        <%= link "Edit", to: event_path(@conn, :edit, event) %>
+        <%= link "Delete", to: event_path(@conn, :delete, event), method: :delete, data: [confirm: "Are you sure?"] %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Event", to: event_path(@conn, :new) %></span>

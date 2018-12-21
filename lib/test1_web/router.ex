@@ -17,10 +17,9 @@ defmodule Test1Web.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-  end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Test1Web do
-  #   pipe_through :api
-  # end
+    resources "/users", UserController
+    resources "/sessions", SessionController, only: [:new, :create, :delete], singleton: true
+    resources "/events", EventController
+  end
 end
