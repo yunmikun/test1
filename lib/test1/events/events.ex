@@ -20,8 +20,45 @@ defmodule Test1.Events do
   """
   def list_events do
     Event
+    |> order_by(desc: :date)
+    |> preload(:user)
     |> Repo.all()
-    |> Repo.preload(:user)
+  end
+
+  @doc """
+  Returns the list of upcomming events with its user info.
+
+  ## Examples
+
+      iex> list_upcomming_events()
+      [%Event{}, ...]
+
+  """
+  def list_upcomming_events do
+    present_day = DateTime.utc_now()
+    Event
+    |> where([e], e.date >= ^present_day)
+    |> order_by(desc: :date)
+    |> preload(:user)
+    |> Repo.all()
+  end
+
+  @doc """
+  Returns the list of past events with its user info.
+
+  ## Examples
+
+      iex> list_past_events()
+      [%Event{}, ...]
+
+  """
+  def list_past_events do
+    present_day = DateTime.utc_now()
+    Event
+    |> where([e], e.date < ^present_day)
+    |> order_by(desc: :date)
+    |> preload(:user)
+    |> Repo.all()
   end
 
   @doc """

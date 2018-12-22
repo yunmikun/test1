@@ -13,13 +13,13 @@ defmodule Test1Web.EventController do
   end
 
   def upcomming(conn, _params) do
-    events = Events.list_events()
+    events = Events.list_upcomming_events()
     conn
     |> render("index.html", events: events, active: :upcomming)
   end
 
   def past(conn, _params) do
-    events = Events.list_events()
+    events = Events.list_past_events()
     conn
     |> render("index.html", events: events, active: :past)
   end
