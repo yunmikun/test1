@@ -19,8 +19,8 @@ defmodule Test1.Accounts do
   """
   def list_users do
     User
+    |> preload(:events)
     |> Repo.all()
-    |> Repo.preload(:events)
   end
 
   @doc """
@@ -39,8 +39,8 @@ defmodule Test1.Accounts do
   """
   def get_user!(id) do
     User
+    |> preload(:events)
     |> Repo.get!(id)
-    |> Repo.preload(:events)
   end
 
   @doc """
@@ -62,38 +62,58 @@ defmodule Test1.Accounts do
   end
 
   @doc """
-  Updates a user.
+  Updates the current user. If trying to update different user
+  `{:error, :wrong_user}` is returned.
 
   ## Examples
 
-      iex> update_user(user, %{field: new_value})
+      iex> update_user(current_user, user, %{field: new_value})
       {:ok, %User{}}
 
-      iex> update_user(user, %{field: bad_value})
+      iex> update_user(current_user, user, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
+      iex> update_user(current_user, different_user, %{field: bad_value})
+      {:error, :wrong_user}
+
   """
-  def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
+  def update_user(%User{} = current_user, %User{} = user, attrs) do
+    case user do
+      ^current_user ->
+	user
+	|> User.changeset(attrs)
+	|> Repo.update()
+      _ ->
+	{:error, :wrong_user}
+    end
   end
 
   @doc """
-  Deletes a User.
+  Deletes the current user with all its data (events).
+
+  If trying to delete a different user, `{:error, :wrong_user}`
+  is returned.
 
   ## Examples
 
-      iex> delete_user(user)
+      iex> delete_user(current_user, user)
       {:ok, %User{}}
 
-      iex> delete_user(user)
+      iex> delete_user(current_user, user)
       {:error, %Ecto.Changeset{}}
 
+      iex> delete_user(current_user, different_user)
+      {:error, :wrong_user}
+
   """
-  def delete_user(%User{} = user) do
-    user
-    |> Repo.delete()
+  def delete_user(%User{} = current_user, %User{} = user) do
+    case user do
+      ^current_user ->
+	user
+	|> Repo.delete()
+      _ ->
+	{:error, :wrong_user}
+    end
   end
 
   @doc """
@@ -105,11 +125,22 @@ defmodule Test1.Accounts do
       %Ecto.Changeset{source: %User{}}
 
   """
-  def change_user(%User{} = user) do
-    user
-    |> User.changeset(%{})
+  def change_user(%User{} = current_user, %User{} = user) do
+    case user do
+      ^current_user ->
+	changeset = User.changeset(user, %{})
+	{:ok, changeset}
+      _ ->
+	{:error, :wrong_user}
+    end
   end
 
+  @doc """
+  Checks if user input (email and password pair) are valid.
+
+  Is used to authorise a user session.
+  """
+  @spec authenticate_by_email_password(String.t, String.t) :: %User{} | nil
   def authenticate_by_email_password(email, password) do
     User
     |> where([u], u.email == ^email and u.password == ^password)

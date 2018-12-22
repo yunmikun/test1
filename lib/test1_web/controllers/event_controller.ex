@@ -4,6 +4,8 @@ defmodule Test1Web.EventController do
   alias Test1.Events
   alias Test1.Events.Event
 
+  import Test1.AuthentificationHelper
+
   # Public actions:
 
   def index(conn, _params) do
@@ -31,21 +33,6 @@ defmodule Test1Web.EventController do
   end
 
   # Actions recuiring to sign in:
-
-  # Checks if user is authentified. Redirects to sign in page if not.
-  defp authenticate_user(conn, _) do
-    case get_session(conn, :user_id) do
-      nil ->
-	conn
-	|> Phoenix.Controller.put_flash(:error, "Login required")
-	|> Phoenix.Controller.redirect(to: session_path(conn, :new))
-	|> halt()
-      user_id ->
-	conn
-	|> assign(:current_user, Test1.Accounts.get_user!(user_id))
-    end
-  end
-
   plug :authenticate_user when action in [:new, :create, :edit, :update, :delete]
 
   def new(conn, _params) do
