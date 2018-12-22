@@ -1,48 +1,37 @@
-<h1>Show Event</h1>
+<div class="event-content">
 
-<ul>
-
-  <li>
-    <strong>Title:</strong>
-    <%= @event.title %>
-  </li>
-
-  <li>
-    <strong>City:</strong>
-    <%= @event.city %>
-  </li>
-
-  <li>
-    <strong>Description:</strong>
-    <%= @event.description %>
-  </li>
-
-  <li>
-    <strong>Date:</strong>
-    <%= @event.date %>
-  </li>
-
-  <li>
-    <strong>Cover:</strong>
+  <div class="event-cover">
     <img src="<%= Test1.ImageUploader.url({@event.cover, @event}) %>">
-  </li>
+  </div>
 
-  <li>
-    <strong>Address:</strong>
-    <%= @event.address %>
-  </li>
+  <div class="event-title">
+    <%= @event.title %>
+  </div>
 
-  <li>
-    <strong>Link:</strong>
-    <%= @event.link %>
-  </li>
+  <div class="event-datetime">
+    <%= @event.date %>
+  </div>
 
-  <li>
-    <strong>Organizer:</strong>
+  <div class="event-location">
+    <%= @event.city %>, <%= @event.address %>
+  </div>
+
+  <div class="event-description">
+    <%= @event.description %>
+  </div>
+
+  <div class="event-external-link">
+    <%= link "Elsewhere", to: @event.link %>
+  </div>
+
+  <div class="event-organizer">By:
     <%= link @event.user.name, to: user_path(@conn, :show, @event.user.id) %>
-  </li>
+  </div>
 
-</ul>
-
-<span><%= link "Edit", to: event_path(@conn, :edit, @event) %></span>
-<span><%= link "Back", to: event_path(@conn, :index) %></span>
+  <div class="event-actions">
+    <%= if Plug.Conn.get_session(@conn, :user_id) == @event.user.id do %>
+      <%= link "Edit", to: event_path(@conn, :edit, @event) %>
+      <%= link "Delete", to: event_path(@conn, :delete, @event), method: :delete, data: [confirm: "Are you sure?"] %>
+    <% end %>
+  </div>
+</div>

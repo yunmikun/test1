@@ -30,7 +30,7 @@
 	<img src="<%= Test1.ImageUploader.url({event.cover, event}) %>">
       </div>
       <div class="event-title">
-	<%= event.title %>
+	<%= link event.title, to: event_path(@conn, :show, event) %>
       </div>
       <div class="event-datetime">
 	<%= event.date %>
@@ -46,14 +46,6 @@
       </div>
       <div class="event-organizer">By:
 	<%= link event.user.name, to: user_path(@conn, :show, event.user.id) %>
-      </div>
-
-      <div class="event-actions">
-        <%= link "Show", to: event_path(@conn, :show, event) %>
-	<%= if Plug.Conn.get_session(@conn, :user_id) == event.user.id do %>
-          <%= link "Edit", to: event_path(@conn, :edit, event) %>
-          <%= link "Delete", to: event_path(@conn, :delete, event), method: :delete, data: [confirm: "Are you sure?"] %>
-	<% end %>
       </div>
     </div>
   <% end %>
