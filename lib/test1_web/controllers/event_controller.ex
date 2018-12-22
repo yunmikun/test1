@@ -9,7 +9,19 @@ defmodule Test1Web.EventController do
   def index(conn, _params) do
     events = Events.list_events()
     conn
-    |> render("index.html", events: events)
+    |> render("index.html", events: events, active: nil)
+  end
+
+  def upcomming(conn, _params) do
+    events = Events.list_events()
+    conn
+    |> render("index.html", events: events, active: :upcomming)
+  end
+
+  def past(conn, _params) do
+    events = Events.list_events()
+    conn
+    |> render("index.html", events: events, active: :past)
   end
 
   def show(conn, %{"id" => id}) do

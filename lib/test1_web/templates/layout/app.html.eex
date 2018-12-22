@@ -15,13 +15,24 @@
     <div class="container">
       <header class="header">
         <nav role="navigation">
+	  <ul class="nav nav-pills pull-left">
+	    <li>
+	      <%= link "Home", to: page_path(@conn, :index) %>
+	    </li>
+	    <li>
+	      <%= link "Events", to: event_path(@conn, :index) %>
+	    </li>
+	    <li>
+	      <%= link "Persons", to: user_path(@conn, :index) %>
+	    </li>
+	  </ul>
           <ul class="nav nav-pills pull-right">
             <%= if get_session(@conn, :user_id) != nil do %>
-              <%= form_for @conn, session_path(@conn, :delete), [method: :delete, as: :user], fn _ -> %>
-                <li>
+              <li>
+                <%= form_for @conn, session_path(@conn, :delete), [method: :delete, as: :user], fn _ -> %>
                   <%= submit "Sign out" %>
-                </li>
-              <% end %>
+                <% end %>
+              </li>
 	    <% else %>
               <li>
 	        <%= link "Sign in", to: session_path(@conn, :new) %>
@@ -32,7 +43,6 @@
 	    <% end %>
           </ul>
         </nav>
-        <span class="logo"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

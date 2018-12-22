@@ -11,13 +11,13 @@ defmodule Test1Web.SessionController do
     case Accounts.authenticate_by_email_password(email, password) do
       {:ok, user} ->
 	conn
-        |> put_flash(:info, "User created successfully.")
+        |> put_flash(:info, "Signed in successfully.")
 	|> put_session(:user_id, user.id)
 	|> configure_session(renew: true)
         |> redirect(to: event_path(conn, :index))
       {:error, :unauthorized} ->
 	conn
-	|> put_flash(:error, "Wrong email or password")
+	|> put_flash(:error, "Wrong email or password!")
 	|> redirect(to: session_path(conn, :new))
     end
   end

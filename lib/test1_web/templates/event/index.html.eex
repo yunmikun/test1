@@ -1,40 +1,60 @@
-<h1>Listing Events</h1>
+<div class="event-nav">
+  <ul>
+    <li>
+      <%= link "New Event", to: event_path(@conn, :new) %>
+    </li>
+    <li <%= if @active == :upcomming do %>
+	class="active"
+	<% end %>
+	>
+      <%= link "Upcomming", to: event_path(@conn, :upcomming) %>
+    </li>
+    <li <%= if @active == :past do %>
+	class="active"
+	<% end %>
+	>
+      <%= link "Past", to: event_path(@conn, :past) %>
+    </li>
+    <%= if not is_nil(@active) do %>
+      <li>
+        <%= link "All", to: event_path(@conn, :index) %>
+      </li>
+    <% end %>
+  </ul>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>City</th>
-      <th>Description</th>
-      <th>Date</th>
-      <th>Cover</th>
-      <th>Address</th>
-      <th>Link</th>
-      <th>Organizer</th>
+<div class="events-container">
+  <%= for event <- @events do %>
+    <div class="event-content">
+      <div class="event-cover">
+	<img src="<%= Test1.ImageUploader.url({event.cover, event}) %>">
+      </div>
+      <div class="event-title">
+	<%= event.title %>
+      </div>
+      <div class="event-datetime">
+	<%= event.date %>
+      </div>
+      <div class="event-location">
+	<%= event.city %>, <%= event.address %>
+      </div>
+      <div class="event-description">
+	<%= event.description %>
+      </div>
+      <div class="event-external-link">
+	<%= link "Elsewhere", to: event.link %>
+      </div>
+      <div class="event-organizer">By:
+	<%= link event.user.name, to: user_path(@conn, :show, event.user.id) %>
+      </div>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for event <- @events do %>
-    <tr>
-      <td><%= event.title %></td>
-      <td><%= event.city %></td>
-      <td><%= event.description %></td>
-      <td><%= event.date %></td>
-      <td><img src="<%= Test1.ImageUploader.url({event.cover, event}) %>"></td>
-      <td><%= event.address %></td>
-      <td><%= event.link %></td>
-      <td><%= link event.user.name, to: user_path(@conn, :show, event.user.id) %></td>
-
-      <td>
+      <div class="event-actions">
         <%= link "Show", to: event_path(@conn, :show, event) %>
-        <%= link "Edit", to: event_path(@conn, :edit, event) %>
-        <%= link "Delete", to: event_path(@conn, :delete, event), method: :delete, data: [confirm: "Are you sure?"] %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<span><%= link "New Event", to: event_path(@conn, :new) %></span>
+	<%= if Plug.Conn.get_session(@conn, :user_id) == event.user.id do %>
+          <%= link "Edit", to: event_path(@conn, :edit, event) %>
+          <%= link "Delete", to: event_path(@conn, :delete, event), method: :delete, data: [confirm: "Are you sure?"] %>
+	<% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

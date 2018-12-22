@@ -20,6 +20,11 @@ defmodule Test1Web.Router do
 
     resources "/users", UserController
     resources "/sessions", SessionController, only: [:new, :create, :delete], singleton: true
+
+    scope "/events" do
+      get "/upcomming", EventController, :upcomming
+      get "/past", EventController, :past
+    end
     resources "/events", EventController
   end
 end
