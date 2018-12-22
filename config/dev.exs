@@ -56,3 +56,8 @@ config :test1, Test1.Repo,
   database: "test1_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :test1, :api_keys,
+  dadata_api_key: "72fcb7defb3b76b6a716fa1fe4a9d279038222ae",
+  dadata_secret_key: "9c36a3728e447bd0d1298e7d6c59c11e50dd4752"
+

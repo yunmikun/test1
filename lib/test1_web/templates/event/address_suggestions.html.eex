@@ -1,0 +1,31 @@
+<!-- Address suggestion hints. -->
+<style type="text/css">
+  @import url("https://cdn.jsdelivr.net/npm/suggestions-jquery@18.11.1/dist/css/suggestions.min.css")
+</style>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<!--[if lt IE 10]>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.1/jquery.xdomainrequest.min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/suggestions-jquery@18.11.1/dist/js/jquery.suggestions.min.js"></script>
+<script type="text/javascript">
+  var token = "<%= Application.get_env(:test1, :api_keys)[:dadata_api_key] %>",
+      type = "ADDRESS",
+      $city = $("#event_city"),
+      $address = $("#event_address")
+
+  $city.suggestions({
+    token: token,
+    type: type,
+    hint: false,
+    bounds: "city-settlement"
+  });
+
+  $address.suggestions({
+    token: token,
+    type: type,
+    hint: false,
+    noSuggestionsHint: false,
+    bounds: "street-house",
+    constraints: $city
+  });
+</script>
