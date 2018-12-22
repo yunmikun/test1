@@ -100,9 +100,15 @@ defmodule Test1Web.EventController do
 
   def delete(conn, %{"id" => id}) do
     event = Events.get_event!(id)
-    {:ok, _event} = Events.delete_event(conn.assigns.current_user, event)
-    conn
-    |> put_flash(:info, "Event deleted successfully.")
-    |> redirect(to: event_path(conn, :index))
+    case Events.delete_event(conn.assigns.current_user, event) do
+      {:ok, _event} ->
+	conn
+	|> put_flash(:info, "Event deleted successfully.")
+	|> redirect(to: event_path(conn, :index))
+      {:error, :wrong_user} ->
+	conn
+	|> put_flash(:error, "This event belongs to a different user!")
+	|> redirect(to: event_path(conn, :index))
+    end
   end
 end
