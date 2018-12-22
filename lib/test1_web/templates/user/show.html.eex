@@ -1,37 +1,47 @@
-<h1>Show User</h1>
-
-<ul>
-
-  <li>
-    <strong>Name:</strong>
+<div class="user-content">
+  <div class="user-name">
     <%= @user.name %>
-  </li>
+  </div>
 
-  <li>
-    <strong>Email:</strong>
-    <%= @user.email %>
-  </li>
+  <div class="user-email">
+    <strong>Email:</strong> <%= link @user.email, to: "mailto:#{@user.email}" %>
+  </div>
 
-  <li>
-    <strong>Bio:</strong>
-    <%= @user.bio %>
-  </li>
+  <div class="user-bio">
+    <strong>Bio:</strong> <%= @user.bio %>
+  </div>
 
-  <li>
-    <strong>Password:</strong>
-    <%= @user.password %>
-  </li>
-
-</ul>
-
-<strong>Events:</strong>
-<ul>
-  <%= for event <- @user.events do %>
-      <li>
-	<%= link event.title, to: event_path(@conn, :show, event.id) %>
-      </li>
+  <%= if Plug.Conn.get_session(@conn, :user_id) == @user.id do %>
+    <div class="user-actions">
+      <span><%= link "Edit profile", to: user_path(@conn, :edit, @user) %></span><br>
+      <span><%= link "Delete my account", to: user_path(@conn, :delete, @user), method: :delete, data: [confirm: "Are you sure?"] %></span>
+    </div>
   <% end %>
-</ul>
+</div>
 
-<span><%= link "Edit", to: user_path(@conn, :edit, @user) %></span>
-<span><%= link "Back", to: user_path(@conn, :index) %></span>
+<h2>Events by this user:</h2>
+
+<div class="event-container">
+  <%= for event <- @user.events do %>
+      <div class="event-content">
+	<div class="event-cover">
+	  <img src="<%= Test1.ImageUploader.url({event.cover, event}) %>">
+	</div>
+	<div class="event-title">
+	  <%= link event.title, to: event_path(@conn, :show, event.id) %>
+	</div>
+	<div class="event-datetime">
+	  <%= event.date %>
+	</div>
+	<div class="event-location">
+	  <%= event.city %>, <%= event.address %>
+	</div>
+	<div class="event-description">
+	  <%= event.description %>
+	</div>
+	<div class="event-external-link">
+	  <%= link "Elsewhere", to: event.link %>
+	</div>
+      </div>
+  <% end %>
+</div>

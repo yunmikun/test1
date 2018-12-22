@@ -18,7 +18,7 @@ defmodule Test1Web.UserController do
     case Accounts.create_user(user_params) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "User created successfully.")
+        |> put_flash(:info, "Welcome here!")
         |> redirect(to: user_path(conn, :show, user))
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -43,7 +43,7 @@ defmodule Test1Web.UserController do
     case Accounts.update_user(user, user_params) do
       {:ok, user} ->
         conn
-        |> put_flash(:info, "User updated successfully.")
+        |> put_flash(:info, "Profile info updated successfully.")
         |> redirect(to: user_path(conn, :show, user))
 
       {:error, %Ecto.Changeset{} = changeset} ->
