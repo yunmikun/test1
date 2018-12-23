@@ -19,5 +19,6 @@ defmodule Test1.Accounts.User do
     user
     |> cast(attrs, [:name, :email, :bio, :password])
     |> validate_required([:name, :email, :bio, :password])
+    |> validate_format(:email, ~r/@/)
   end
 end
