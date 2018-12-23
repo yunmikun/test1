@@ -95,7 +95,7 @@ defmodule Test1Web.EventController do
       {:error, :wrong_user} ->
 	conn
 	|> put_flash(:error, "This event belongs to a different user!")
-	|> redirect(to: event_path(conn, :index))
+	|> redirect(to: event_path(conn, :show, event))
     end
   end
 end
