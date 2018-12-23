@@ -115,12 +115,12 @@ defmodule Test1.Events do
       {:error, :wrong_user}
 
   """
-  def update_event(%User{id: user_id} = user, %Event{} = event, attrs) do
+  def update_event(%User{id: user_id}, %Event{} = event, attrs) do
     case event.user.id do
       ^user_id ->
 	event
 	|> Event.changeset(attrs)
-	|> Ecto.Changeset.put_change(:organizer, user.id)
+	|> Ecto.Changeset.put_change(:organizer, user_id)
 	|> Repo.update()
       _ ->
 	{:error, :wrong_user}
@@ -142,7 +142,7 @@ defmodule Test1.Events do
       {:error, :wrong_user}
 
   """
-  def delete_event(%User{id: user_id} = user, %Event{} = event) do
+  def delete_event(%User{id: user_id}, %Event{} = event) do
     case event.user.id do
       ^user_id ->
 	Repo.delete(event)
@@ -165,7 +165,7 @@ defmodule Test1.Events do
       {:error, :wrong_user}
 
   """
-  def change_event(%User{id: user_id} = user, %Event{} = event) do
+  def change_event(%User{id: user_id}, %Event{} = event) do
     case event.user.id do
       ^user_id ->
 	changeset = Event.changeset(event, %{})
